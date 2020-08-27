@@ -96,6 +96,7 @@ function processFirstlayer(){
     var centre = document.firstlayerForm.centre.checked;
     var bedX = document.firstlayerForm.bedx.value - 50;
     var bedY = document.firstlayerForm.bedy.value - 50;
+    var nozzleSize = document.firstlayerForm.nozzleSize.value;
     var bedRad = Math.round((document.firstlayerForm.beddia.value)/2);
     var retDist = document.firstlayerForm.retdist.value;
     var retSpeed = document.firstlayerForm.retspeed.value*60;
@@ -170,8 +171,46 @@ function processFirstlayer(){
         firstlayerStart = firstlayerStart.replace(/;G29 ; probe ABL/, "G29 L1 ; Load the mesh stored in slot 1\nG29 J ; Probe 3 points to tilt mesh");
     }
 
+    var layer1 = nozzleSize.substring(0,1) + "." + nozzleSize.substring(1,2);
+    layer1 = layer1/2;
+    firstlayerStart = firstlayerStart.replace(/; layer 1, Z = 0.200/, "layer 1, Z = " + layer1);
+
+
+
     for(var i = 0; i <= 4; i++){
-        var skirt = "; skirt "+(i+1)+"\n"+originalskirt;
+        var skirt = "";
+        var square = "";
+
+        switch (nozzleSize) {
+            case "04":
+                 skirt = "; skirt "+(i+1)+"\n"+originalskirt;
+                 square = "; square "+(i+1)+"\n"+originalSquare;
+              break;
+            case "02":
+                 skirt = "; skirt "+(i+1)+"\n"+originalskirt_02;
+                 square = "; square "+(i+1)+"\n"+originalSquare_02;
+              break;
+            case "05":
+                 skirt = "; skirt "+(i+1)+"\n"+originalskirt_05;
+                 square = "; square "+(i+1)+"\n"+originalSquare_05;
+              break;
+            case "06":
+                 skirt = "; skirt "+(i+1)+"\n"+originalskirt_06;
+                 square = "; square "+(i+1)+"\n"+originalSquare_06;
+              break;
+            case "08":
+                 skirt = "; skirt "+(i+1)+"\n"+originalskirt_08;
+                 square = "; square "+(i+1)+"\n"+originalSquare_08;
+              break;
+            case "10":
+                 skirt = "; skirt "+(i+1)+"\n"+originalskirt_10;
+                 square = "; square "+(i+1)+"\n"+originalSquare_10;
+              break;                                                        
+            default:
+                skirt = "; skirt "+(i+1)+"\n"+originalskirt;
+                square = "; square "+(i+1)+"\n"+originalSquare;
+          }
+
         var firstlayerArray = skirt.split(/\n/g);
         var regexp = /X[0-9\.]+/;
         firstlayerArray.forEach(function(index, item){
@@ -189,7 +228,7 @@ function processFirstlayer(){
         });
         skirt = firstlayerArray.join("\n");
         skirts += skirt;
-        var square = "; square "+(i+1)+"\n"+originalSquare;
+        // var square = "; square "+(i+1)+"\n"+originalSquare;
         var firstlayerArray = square.split(/\n/g);
         var regexp = /X[0-9\.]+/;
         firstlayerArray.forEach(function(index, item){
@@ -226,13 +265,39 @@ function processBaseline(){
     var centre = document.baselineForm.centre.checked;
     var bedX = Math.round((document.baselineForm.bedx.value-100)/2);
     var bedY = Math.round((document.baselineForm.bedy.value-100)/2);
+    var nozzleSize = document.baselineForm.baselineNozzleSize.value;
     var retDist = document.baselineForm.retdist.value;
     var retSpeed = document.baselineForm.retspeed.value*60;
     var abl = document.baselineForm.abl.value;
     var pc = document.baselineForm.pc.value;
     var pcResume = 255;
     var customStart = document.baselineForm.startgcode.value;
+ 
     var baseline = originalBaseline;
+    
+    switch (nozzleSize) {
+        case "04":
+            baseline = originalBaseline;
+          break;
+        case "02":
+            baseline = originalBaseline_02;
+          break;
+        case "05":
+            baseline = originalBaseline_05;
+          break;
+        case "06":
+            baseline = originalBaseline_06;
+          break;
+        case "08":
+            baseline = originalBaseline_08;
+          break;
+        case "10":
+            baseline = originalBaseline_10;
+          break;                                                        
+        default:
+            baseline = originalBaseline;
+      }
+    
     switch(pc){
         case '0':
             baseline = baseline.replace(/;fan2/, "M106 S255 ; custom fan 100% from layer 2");
@@ -260,6 +325,7 @@ function processBaseline(){
             pcResume = 0;
             break;
     }
+
     baseline = baseline.replace(/M140 S60/g, "M140 S"+bedTemp+" ; custom bed temp");
     baseline = baseline.replace(/M190 S60/g, "M190 S"+bedTemp+" ; custom bed temp");
     if(abl != 4){

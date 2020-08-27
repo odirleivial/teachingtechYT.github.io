@@ -187,6 +187,18 @@
             <span id="firstlayerXY"><label>Bed X dimension (mm): <input type="number" name="bedx" value="100" min="100" max="600" step="1"></label>
             <label>Bed Y dimension (mm): <input type="number" name="bedy" value="100" min="100" max="600" step="1"></label><br /></span>
             <span id="firstlayerdia"><label>Bed diameter dimension (mm): <input type="number" name="beddia" value="100" min="100" max="600" step="1"></label></span>
+           </script>
+            <h4>Nozzle Size</h4>
+            <label>Nozzle Size (mm):      
+            <select name="nozzleSize" id="nozzleSize">
+                <option value="04">0.4</option>
+                <option value="02">0.2</option>
+                <option value="05">0.5</option>
+                <option value="06">0.6</option>
+                <option value="08">0.8</option>
+                <option value="10">1.0</option>
+            </select>
+            </label><br />
             <script>
                 if(document.firstlayerForm.centre.checked == false){
                     $("#firstlayerXY").show();
@@ -258,6 +270,17 @@
             <p>For the hot end and bed respectively, typical PLA temperatures are 200 and 60, PETG 235 and 80, ABS 250 and 100, TPU 230 and 5 (effectively off).</p>
             <label>Hot end temperature (deg C): <input type="number" name="hotendtemp" value="200" min="160" max="450"></label>
             <label>Bed temperature (deg C): <input type="number" name="bedtemp" value="60" min="5" max="150"></label><br />
+            <h4>Nozzle Size</h4>
+            <label>Nozzle Size (mm):      
+            <select name="baselineNozzleSize" id="baselineNozzleSize">
+                <option value="04">0.4</option>
+                <option value="02">0.2</option>
+                <option value="05">0.5</option>
+                <option value="06">0.6</option>
+                <option value="08">0.8</option>
+                <option value="10">1.0</option>
+            </select>
+            </label><br /> 
             <h4>Part Cooling Fan</h4>
             <p>Printing with PLA typically has the part cooling fan come on from layer 2. Alter this default behaviour here:</p>
             <label for="pc">Select part cooling fan behaviour:</label>
